@@ -33,6 +33,7 @@ class EmpleadoController extends Controller
         $areas = Area::all();
         $roles = Role::all();
         return view('empleado.create')->with([
+            'roles_user' => [],
             'areaid' => 0,
             'empleado' => $empleado,
             'areas' => $areas,
@@ -52,7 +53,6 @@ class EmpleadoController extends Controller
         $empleado = Empleado::create($request->all());
         
         $roles = $request->roles;
-
         foreach ($roles as $rol) {
             $rol = Role::findOrFail($rol);
             $empleado->roles()->attach($rol);
@@ -107,6 +107,12 @@ class EmpleadoController extends Controller
         $empleado = Empleado::findOrFail($id);
         request()->validate(Empleado::$reglas);
 
+        //remove roles
+        $roles =  $empleado->roles->pluck('id')->toArray();
+        foreach ($roles as $rol) {
+            $empleado->roles()->detach($rol);
+        }
+
         $empleado->fill($request->only([
             'nombre',
             'email',
@@ -118,6 +124,13 @@ class EmpleadoController extends Controller
         
         if (!$request->has('boletin')){
             $empleado->boletin = '0';
+        }
+
+        //guarda los nuevos roles
+        $roles = $request->roles;
+        foreach ($roles as $rol) {
+            $rol = Role::findOrFail($rol);
+            $empleado->roles()->attach($rol);
         }
 
         $empleado->save();
@@ -135,7 +148,6 @@ class EmpleadoController extends Controller
     public function destroy(Empleado $empleado)
     {
         $empleado->delete();
-
         return redirect()->route('empleados.index')
             ->with('success', 'Empleado deleted successfully');
     }

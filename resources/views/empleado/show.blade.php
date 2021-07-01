@@ -11,10 +11,10 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="float-left">
-                            <span class="card-title">Show Empleado</span>
+                            <span class="card-title">Ver Empleado: {{$empleado->nombre}}</span>
                         </div>
                         <div class="float-right">
-                            <a class="btn btn-primary" href="{{ route('empleados.index') }}"> Back</a>
+                            <a class="btn btn-primary" href="{{ route('empleados.index') }}"> Regresar</a>
                         </div>
                     </div>
 
@@ -30,11 +30,11 @@
                         </div>
                         <div class="form-group">
                             <strong>Sexo:</strong>
-                            {{ $empleado->sexo }}
+                            {{ $empleado->sexoName() }}
                         </div>
                         <div class="form-group">
-                            <strong>Area Id:</strong>
-                            {{ $empleado->area_id }}
+                            <strong>Area</strong>
+                            {{ $empleado->area->nombre }}
                         </div>
                         <div class="form-group">
                             <strong>Boletin:</strong>
@@ -44,7 +44,13 @@
                             <strong>Descripcion:</strong>
                             {{ $empleado->descripcion }}
                         </div>
-
+                        <div class="form-group">
+                            <strong>Roles:</strong>
+                            <br>
+                            @foreach($empleado->roles as $rol)
+                                {{ ucwords($rol->nombre) }} <br>
+                            @endforeach
+                        </div>
                     </div>
                 </div>
             </div>

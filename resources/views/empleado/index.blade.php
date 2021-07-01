@@ -47,8 +47,7 @@
                                 <tbody>
                                     @foreach ($empleados as $empleado)
                                         <tr>
-                                            <td>{{ ++$i }}</td>
-                                            
+                                            <td>{{ $empleado->id }}</td>
 											<td>{{ $empleado->nombre }}</td>
 											<td>{{ $empleado->email }}</td>
 											<td>{{ $empleado->sexoName() }}</td>
@@ -62,7 +61,7 @@
                                                     <a class="btn btn-sm btn-success" href="{{ route('empleados.edit',$empleado->id) }}"><i class="fa fa-fw fa-edit"></i> Editar</a>
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i> Eliminar</button>
+                                                    <button type="submit" onclick="return confirm('Estas seguro?')" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i> Eliminar</button>
                                                 </form>
                                             </td>
                                         </tr>
