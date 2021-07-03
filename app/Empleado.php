@@ -10,9 +10,10 @@ class Empleado extends Model
     static $reglas = [
         'nombre' => 'required',
         'email' => 'required|email',
-        'sexo' => 'required|max:1',
+        'sexo' => 'required|in:M,F',
         'area_id' => 'required',
         'descripcion' => 'required',
+        'roles' => 'required'
     ];
 
     protected $perPage = 10;

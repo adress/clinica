@@ -17,6 +17,7 @@ class EmpleadoController extends Controller
     public function index()
     {
         $empleados = Empleado::paginate();
+        //dd(csrf_token());
 
         return view('empleado.index', compact('empleados'))
             ->with('i', (request()->input('page', 1) - 1) * $empleados->perPage());
@@ -50,8 +51,9 @@ class EmpleadoController extends Controller
     public function store(Request $request)
     {
         request()->validate(Empleado::$reglas);
-        $empleado = Empleado::create($request->all());
         
+        $empleado = Empleado::create($request->all());
+
         $roles = $request->roles;
         foreach ($roles as $rol) {
             $rol = Role::findOrFail($rol);
@@ -121,8 +123,8 @@ class EmpleadoController extends Controller
             'area_id',
             'descripcion',
         ]));
-        
-        if (!$request->has('boletin')){
+
+        if (!$request->has('boletin')) {
             $empleado->boletin = '0';
         }
 
@@ -145,9 +147,12 @@ class EmpleadoController extends Controller
      * @param  \App\Empleado  $empleado
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Empleado $empleado)
+    public function destroy(Request $request, Empleado $empleado)
     {
         $empleado->delete();
+        if ($request->ajax()) {
+            return response()->json(['message' => 'Empleado eliminado']);
+        }
         return redirect()->route('empleados.index')
             ->with('success', 'Empleado deleted successfully');
     }
