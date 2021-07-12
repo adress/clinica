@@ -41,12 +41,18 @@
         <label for="">roles:</label>
         <br>
         @foreach ($roles as $rol)
-            <input type="checkbox" name="roles[]" value="{{$rol->id}}" {{in_array($rol->id, $roles_user) ? 'checked': '' }}>{{$rol->nombre}}<br/>
+            <input type="checkbox" name="roles[]" value="{{$rol->id}}" 
+            class="form-check-input {{($errors->has('roles') ? ' is-invalid' : '')}}"
+            {{in_array($rol->id, $roles_user) ? 'checked': ''}} >
+            {{$rol->nombre}}
+            <br>
         @endforeach
+        {!! $errors->first('roles', '<div class="invalid-feedback">:message</p>') !!}
         </div>
 
     </div>
     <div class="box-footer mt20">
         <button type="submit" class="btn btn-primary">Submit</button>
     </div>
+    
 </div>
